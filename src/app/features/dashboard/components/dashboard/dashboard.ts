@@ -1,9 +1,18 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
+import { CardComponent, CustomDraggableTable } from '@shared/components';
+
+import { CustomDashboardHeader } from '../custom-dashboard-header/custom-dashboard-header';
+
 @Component({
   selector: 'app-dashboard',
-  imports: [],
-  template: `<p class="bg-primary">dashboard works!</p>`,
+  imports: [CustomDashboardHeader, CardComponent, CustomDraggableTable],
+  template: `
+    <app-card class="flex flex-col">
+      <app-custom-dashboard-header />
+      <app-custom-draggable-table />
+    </app-card>
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class Dashboard { }
+export class Dashboard {}

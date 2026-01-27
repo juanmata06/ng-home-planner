@@ -8,7 +8,7 @@ export const routes: Routes = [
     children: [
       {
         path: 'dashboard',
-        loadComponent: () => import('@features/dashboard/components/dashboard/dashboard'),
+        loadComponent: () => import('@features/dashboard/dashboard-page/dashboard-page'),
         title: 'Dashboard',
       },
       {
