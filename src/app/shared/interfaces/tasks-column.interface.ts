@@ -1,6 +1,6 @@
 import { Task, TaskStatus } from "./task.interface";
 
-export interface DraggableColumn {
+export interface TasksColumn {
   title: string;
   status: TaskStatus;
   tasks: Task[];
