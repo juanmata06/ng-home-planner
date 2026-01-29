@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal, WritableSignal } from '@angular/core';
 
 import {
   CdkDropListGroup,
@@ -9,28 +9,27 @@ import {
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
 
-import { Task } from '@shared/index';
+import { Task, TaskStatus } from '@shared/index';
 
 import { DraggableItem } from '../draggable-item/draggable-item';
-
 import { DraggableColumn } from '../draggable-column/draggable-column';
 
 @Component({
   selector: 'app-draggable-table',
   imports: [CdkDropListGroup, CdkDropList, CdkDrag, DraggableColumn, DraggableItem],
   template: `
-    <!-- <app-prueba-draggable /> -->
     <div cdkDropListGroup class="py-2 grid grid-cols-1 md:grid-cols-3 gap-6">
       <app-draggable-column
+        id="todo-column"
         cdkDropList
-        [cdkDropListData]="todo"
+        [cdkDropListData]="todo()"
         (cdkDropListDropped)="drop($event)"
       >
         <ng-container column-title>
           {{ 'TODO' }}
         </ng-container>
         <div class="p-2">
-          @for (item of todo; let i = $index; track item) {
+          @for (item of todo(); let i = $index; track item) {
             <app-draggable-item cdkDrag>
               {{ item.title }}
             </app-draggable-item>
@@ -38,43 +37,51 @@ import { DraggableColumn } from '../draggable-column/draggable-column';
         </div>
       </app-draggable-column>
       <app-draggable-column
+        id="doing-column"
         cdkDropList
-        [cdkDropListData]="doing"
+        [cdkDropListData]="doing()"
         (cdkDropListDropped)="drop($event)"
       >
         <ng-container column-title>
           {{ 'DOING' }}
         </ng-container>
         <div class="p-2">
-          @for (item of doing; let i = $index; track item) {
+          @for (item of doing(); let i = $index; track item) {
             <app-draggable-item cdkDrag>
               {{ item.title }}
             </app-draggable-item>
           }
         </div>
       </app-draggable-column>
-      <app-draggable-column
+      <!-- <app-draggable-column
+        id="done-column"
         cdkDropList
-        [cdkDropListData]="done"
+        [cdkDropListData]="done()"
         (cdkDropListDropped)="drop($event)"
       >
         <ng-container column-title>
           {{ 'DONE' }}
         </ng-container>
         <div class="p-2">
-          @for (item of done; let i = $index; track item) {
+          @for (item of done(); let i = $index; track item) {
             <app-draggable-item cdkDrag>
               {{ item.title }}
             </app-draggable-item>
           }
         </div>
-      </app-draggable-column>
+      </app-draggable-column> -->
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DraggableTable {
-  todo: Task[] = [
+  readonly statusMap: Record<string, TaskStatus> = {
+    'todo-column': 'TODO',
+    'doing-column': 'DOING',
+    'done-column': 'DONE',
+  };
+
+  todo: WritableSignal<Task[]> = signal<Task[]>([
     {
       id: 't1',
       title: 'Get to work',
@@ -97,31 +104,9 @@ export class DraggableTable {
       assignedToId: '',
       assignedTo: '',
     },
-    {
-      id: 't3',
-      title: 'Go home',
-      description: 'Return home after work',
-      status: 'TODO',
-      createdAt: new Date('2025-01-03'),
-      createdById: '',
-      createdBy: '',
-      assignedToId: '',
-      assignedTo: '',
-    },
-    {
-      id: 't4',
-      title: 'Fall asleep',
-      description: 'End of day',
-      status: 'TODO',
-      createdAt: new Date('2025-01-04'),
-      createdById: '',
-      createdBy: '',
-      assignedToId: '',
-      assignedTo: '',
-    },
-  ];
+  ]);
 
-  doing: Task[] = [
+  doing: WritableSignal<Task[]> = signal<Task[]>([
     {
       id: 'd1',
       title: 'Eat',
@@ -146,33 +131,9 @@ export class DraggableTable {
       assignedToId: '',
       assignedTo: '',
     },
-    {
-      id: 'd3',
-      title: 'Sleep',
-      description: 'Resting',
-      status: 'DOING',
-      startDate: new Date(),
-      createdAt: new Date('2025-01-03'),
-      createdById: '',
-      createdBy: '',
-      assignedToId: '',
-      assignedTo: '',
-    },
-    {
-      id: 'd4',
-      title: 'Repeat',
-      description: 'Daily routine',
-      status: 'DOING',
-      startDate: new Date(),
-      createdAt: new Date('2025-01-04'),
-      createdById: '',
-      createdBy: '',
-      assignedToId: '',
-      assignedTo: '',
-    },
-  ];
+  ]);
 
-  done: Task[] = [
+  done: WritableSignal<Task[]> = signal<Task[]>([
     {
       id: 'dn1',
       title: 'Get up',
@@ -186,70 +147,26 @@ export class DraggableTable {
       assignedToId: '',
       assignedTo: '',
     },
-    {
-      id: 'dn2',
-      title: 'Brush teeth',
-      description: 'Morning hygiene',
-      status: 'DONE',
-      lastCompletedDate: new Date(),
-      endDate: new Date(),
-      createdAt: new Date('2024-12-30'),
-      createdById: '',
-      createdBy: '',
-      assignedToId: '',
-      assignedTo: '',
-    },
-    {
-      id: 'dn3',
-      title: 'Take a shower',
-      description: 'Morning shower',
-      status: 'DONE',
-      lastCompletedDate: new Date(),
-      endDate: new Date(),
-      createdAt: new Date('2024-12-30'),
-      createdById: '',
-      createdBy: '',
-      assignedToId: '',
-      assignedTo: '',
-    },
-    {
-      id: 'dn4',
-      title: 'Check e-mail',
-      description: 'Review inbox',
-      status: 'DONE',
-      lastCompletedDate: new Date(),
-      endDate: new Date(),
-      createdAt: new Date('2024-12-30'),
-      createdById: '',
-      createdBy: '',
-      assignedToId: '',
-      assignedTo: '',
-    },
-    {
-      id: 'dn5',
-      title: 'Walk dog',
-      description: 'Morning walk',
-      status: 'DONE',
-      lastCompletedDate: new Date(),
-      endDate: new Date(),
-      createdAt: new Date('2024-12-30'),
-      createdById: '',
-      createdBy: '',
-      assignedToId: '',
-      assignedTo: '',
-    },
-  ];
+  ]);
 
   drop(event: CdkDragDrop<Task[]>) {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    const { previousIndex, currentIndex, container, previousContainer } = event;
+    
+    if (previousContainer === container) {
+      moveItemInArray(container.data, previousIndex, currentIndex);
     } else {
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex,
-      );
+      transferArrayItem(previousContainer.data, container.data, previousIndex, currentIndex);
+      const task: Task = container.data[currentIndex];
+      const columnId = container.id;
+      const targetColumn = this.statusMap[columnId];
+      this.handleTaskStatusChange(task, targetColumn);
     }
+  }
+
+  handleTaskStatusChange(task: Task, targetColumn: TaskStatus) {
+    const previousStatus = task.status;
+    task.status = targetColumn;
+
+    console.log(task);
   }
 }
