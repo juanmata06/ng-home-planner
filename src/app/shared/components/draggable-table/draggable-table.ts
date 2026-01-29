@@ -11,8 +11,7 @@ import {
 
 import { Task, TaskStatus } from '@shared/index';
 
-import { DraggableItem } from '../draggable-item/draggable-item';
-import { DraggableColumn } from '../draggable-column/draggable-column';
+import { DraggableColumn, DraggableItem } from './components/index';
 
 @Component({
   selector: 'app-draggable-table',
@@ -28,13 +27,13 @@ import { DraggableColumn } from '../draggable-column/draggable-column';
         <ng-container column-title>
           {{ 'TODO' }}
         </ng-container>
-        <div class="p-2">
+        <ng-container column-body>
           @for (item of todo(); let i = $index; track item) {
             <app-draggable-item cdkDrag>
               {{ item.title }}
             </app-draggable-item>
           }
-        </div>
+        </ng-container>
       </app-draggable-column>
       <app-draggable-column
         id="doing-column"
@@ -45,15 +44,15 @@ import { DraggableColumn } from '../draggable-column/draggable-column';
         <ng-container column-title>
           {{ 'DOING' }}
         </ng-container>
-        <div class="p-2">
+        <ng-container column-body>
           @for (item of doing(); let i = $index; track item) {
             <app-draggable-item cdkDrag>
               {{ item.title }}
             </app-draggable-item>
           }
-        </div>
+        </ng-container>
       </app-draggable-column>
-      <!-- <app-draggable-column
+      <app-draggable-column
         id="done-column"
         cdkDropList
         [cdkDropListData]="done()"
@@ -62,14 +61,14 @@ import { DraggableColumn } from '../draggable-column/draggable-column';
         <ng-container column-title>
           {{ 'DONE' }}
         </ng-container>
-        <div class="p-2">
+        <ng-container column-body>
           @for (item of done(); let i = $index; track item) {
             <app-draggable-item cdkDrag>
               {{ item.title }}
             </app-draggable-item>
           }
-        </div>
-      </app-draggable-column> -->
+        </ng-container>
+      </app-draggable-column>
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -151,8 +150,8 @@ export class DraggableTable {
 
   drop(event: CdkDragDrop<Task[]>) {
     const { previousIndex, currentIndex, container, previousContainer } = event;
-    
-    if (previousContainer === container) {
+
+    if (previousContainer.id === container.id) {
       moveItemInArray(container.data, previousIndex, currentIndex);
     } else {
       transferArrayItem(previousContainer.data, container.data, previousIndex, currentIndex);

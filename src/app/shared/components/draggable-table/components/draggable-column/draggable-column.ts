@@ -12,7 +12,9 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
       <span>X</span>
     </div>
     <!-- Column Body -->
-    <ng-content />
+    <div class="p-2">
+      <ng-content select="[column-body]" />
+    </div>
     <!-- Column Footer -->
     <div id="column-footer" class="p-2">
       <button

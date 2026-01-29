@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
-import { CardComponent } from '../card/card.component';
+import { CardComponent } from '../../../card/card.component';
 
 @Component({
   selector: 'app-draggable-item',
