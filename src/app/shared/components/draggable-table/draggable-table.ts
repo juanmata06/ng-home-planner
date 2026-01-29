@@ -1,21 +1,74 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
-import { CdkDropListGroup } from '@angular/cdk/drag-drop';
+import {
+  CdkDropListGroup,
+  CdkDragDrop,
+  CdkDropList,
+  CdkDrag,
+  moveItemInArray,
+  transferArrayItem,
+} from '@angular/cdk/drag-drop';
 
 import { Task } from '@shared/index';
 
+import { DraggableItem } from '../draggable-item/draggable-item';
+
 import { DraggableColumn } from '../draggable-column/draggable-column';
-import { PruebaDraggable } from '../prueba-draggable/prueba-draggable';
 
 @Component({
   selector: 'app-draggable-table',
-  imports: [CdkDropListGroup, DraggableColumn, PruebaDraggable],
+  imports: [CdkDropListGroup, CdkDropList, CdkDrag, DraggableColumn, DraggableItem],
   template: `
     <!-- <app-prueba-draggable /> -->
     <div cdkDropListGroup class="py-2 grid grid-cols-1 md:grid-cols-3 gap-6">
-      <app-draggable-column columnStatus="TODO" columnName="TO DO" [items]="todo" />
-      <app-draggable-column columnStatus="DOING" columnName="DOING" [items]="doing" />
-      <app-draggable-column columnStatus="DONE" columnName="DONE" [items]="done" />
+      <app-draggable-column
+        cdkDropList
+        [cdkDropListData]="todo"
+        (cdkDropListDropped)="drop($event)"
+      >
+        <ng-container column-title>
+          {{ 'TODO' }}
+        </ng-container>
+        <div class="p-2">
+          @for (item of todo; let i = $index; track item) {
+            <app-draggable-item cdkDrag>
+              {{ item.title }}
+            </app-draggable-item>
+          }
+        </div>
+      </app-draggable-column>
+      <app-draggable-column
+        cdkDropList
+        [cdkDropListData]="doing"
+        (cdkDropListDropped)="drop($event)"
+      >
+        <ng-container column-title>
+          {{ 'DOING' }}
+        </ng-container>
+        <div class="p-2">
+          @for (item of doing; let i = $index; track item) {
+            <app-draggable-item cdkDrag>
+              {{ item.title }}
+            </app-draggable-item>
+          }
+        </div>
+      </app-draggable-column>
+      <app-draggable-column
+        cdkDropList
+        [cdkDropListData]="done"
+        (cdkDropListDropped)="drop($event)"
+      >
+        <ng-container column-title>
+          {{ 'DONE' }}
+        </ng-container>
+        <div class="p-2">
+          @for (item of done; let i = $index; track item) {
+            <app-draggable-item cdkDrag>
+              {{ item.title }}
+            </app-draggable-item>
+          }
+        </div>
+      </app-draggable-column>
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -186,4 +239,17 @@ export class DraggableTable {
       assignedTo: '',
     },
   ];
+
+  drop(event: CdkDragDrop<Task[]>) {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex,
+      );
+    }
+  }
 }

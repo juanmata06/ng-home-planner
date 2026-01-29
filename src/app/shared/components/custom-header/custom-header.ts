@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  selector: 'app-cutom-header',
+  selector: 'app-custom-header',
   imports: [],
   template: `
     <header>
@@ -19,7 +19,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CutomHeader {
+export class CustomHeader {
   userImage!: string;
   userName!: string;
 }

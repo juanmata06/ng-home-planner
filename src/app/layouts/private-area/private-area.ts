@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
-import { CutomHeader } from '@shared/components';
+import { CustomHeader } from '@shared/components';
 
 @Component({
   selector: 'app-private-area',
-  imports: [RouterOutlet, CutomHeader],
+  imports: [RouterOutlet, CustomHeader],
   template: `
-    <app-cutom-header />
+    <app-custom-header />
     <router-outlet />
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,

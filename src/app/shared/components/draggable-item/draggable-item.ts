@@ -9,7 +9,9 @@ import { CardComponent } from '../card/card.component';
     <app-card class="flex-col">
       <!-- Item Header -->
       <div id="item-header" class="w-full py-1">
-        <span class="font-bold"><ng-content /></span>
+        <span class="font-bold">
+          <ng-content />
+        </span>
       </div>
       <!-- Item Body -->
       <div id="item-body" class="w-full py-1">

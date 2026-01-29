@@ -1,0 +1,34 @@
+.draggable-item {
+  @apply block;
+  cursor: grab;
+}
+
+.draggable-item.cdk-dragging {
+  cursor: grabbing !important;
+}
+
+.draggable-item.cdk-drag-placeholder {
+  @apply opacity-0;
+}
+
+.draggable-item.cdk-drag-preview {
+  @apply box-border rounded shadow-lg !opacity-100;
+  cursor: grabbing !important;
+}
+
+.draggable-item.cdk-drag-animating {
+  @apply transition-transform duration-250 ease-in;
+}
+
+.cdk-drop-list {
+  @apply transition-colors duration-150 ease-in;
+
+  &.cdk-drop-list-dragging {
+    cursor: grabbing !important;
+
+    .draggable-item:not(.cdk-drag-placeholder) {
+      @apply cursor-grab transition-transform duration-250 ease-in;
+      cursor: grabbing !important;
+    }
+  }
+}
