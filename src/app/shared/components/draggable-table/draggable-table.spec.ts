@@ -179,7 +179,7 @@ describe('DraggableTable', () => {
         assignedTo: '',
       };
 
-      component.handleTaskStatusChange(task, 'TODO');
+      (component as any).handleTaskStatusChange(task, 'TODO');
 
       expect(task.status).toBe('TODO');
     });
@@ -197,7 +197,7 @@ describe('DraggableTable', () => {
         assignedTo: '',
       };
 
-      component.handleTaskStatusChange(task, 'DOING');
+      (component as any).handleTaskStatusChange(task, 'DOING');
 
       expect(task.status).toBe('DOING');
     });
@@ -215,7 +215,7 @@ describe('DraggableTable', () => {
         assignedTo: '',
       };
 
-      component.handleTaskStatusChange(task, 'DONE');
+      (component as any).handleTaskStatusChange(task, 'DONE');
 
       expect(task.status).toBe('DONE');
     });
@@ -224,7 +224,7 @@ describe('DraggableTable', () => {
       const task: Task = component.doing()[0];
       const initialStatus = task.status;
 
-      component.handleTaskStatusChange(task, 'DONE');
+      (component as any).handleTaskStatusChange(task, 'DONE');
 
       expect(task.status).toBe('DONE');
       expect(task.status).not.toBe(initialStatus);
@@ -233,7 +233,7 @@ describe('DraggableTable', () => {
 
   describe('Drop with Status Change Integration', () => {
     it('should call handleTaskStatusChange when dropping to different column', () => {
-      spyOn(component, 'handleTaskStatusChange');
+      spyOn(component as any, 'handleTaskStatusChange');
 
       const todoTasks = component.todo();
       const doingTasks = component.doing();
@@ -253,14 +253,14 @@ describe('DraggableTable', () => {
 
       component.drop(mockEvent);
 
-      expect(component.handleTaskStatusChange).toHaveBeenCalledWith(
+      expect((component as any).handleTaskStatusChange).toHaveBeenCalledWith(
         doingTasks[0],
         'DOING'
       );
     });
 
     it('should not call handleTaskStatusChange when moving within same column', () => {
-      spyOn(component, 'handleTaskStatusChange');
+      spyOn(component as any, 'handleTaskStatusChange');
 
       const todoTasks = component.todo();
 
@@ -279,13 +279,179 @@ describe('DraggableTable', () => {
 
       component.drop(mockEvent);
 
-      expect(component.handleTaskStatusChange).not.toHaveBeenCalled();
+      expect((component as any).handleTaskStatusChange).not.toHaveBeenCalled();
     });
 
     it('should correctly map column id to task status', () => {
       expect(component.statusMap['todo-column']).toBe('TODO');
       expect(component.statusMap['doing-column']).toBe('DOING');
       expect(component.statusMap['done-column']).toBe('DONE');
+    });
+  });
+
+  describe('Computed Signals', () => {
+    it('should calculate totalTasks correctly', () => {
+      const todoCount = component.todo().length;
+      const doingCount = component.doing().length;
+      const doneCount = component.done().length;
+      const expectedTotal = todoCount + doingCount + doneCount;
+
+      expect(component.totalTasks()).toBe(expectedTotal);
+    });
+
+    it('should update totalTasks when adding task to column', () => {
+      const initialTotal = component.totalTasks();
+      const newTask: Task = {
+        id: 'new-task',
+        title: 'New Task',
+        description: 'New task for testing',
+        status: 'TODO',
+        createdAt: new Date(),
+        createdById: '',
+        createdBy: '',
+        assignedToId: '',
+        assignedTo: '',
+      };
+
+      component.todo.update((tasks) => [...tasks, newTask]);
+
+      expect(component.totalTasks()).toBe(initialTotal + 1);
+    });
+
+    it('should calculate tasksInProgress correctly', () => {
+      const expectedInProgress = component.doing().length;
+
+      expect(component.tasksInProgress()).toBe(expectedInProgress);
+    });
+
+    it('should update tasksInProgress when moving task to DOING', () => {
+      const initialInProgress = component.tasksInProgress();
+      const todoTasks = component.todo();
+      const taskToMove = todoTasks[0];
+
+      component.doing.update((tasks) => [...tasks, taskToMove]);
+
+      expect(component.tasksInProgress()).toBe(initialInProgress + 1);
+    });
+
+    it('should calculate completionRate correctly with all tasks', () => {
+      const total = component.totalTasks();
+      const done = component.done().length;
+      const expectedRate = total === 0 ? 0 : (done / total) * 100;
+
+      expect(component.completionRate()).toBe(expectedRate);
+    });
+
+    it('should calculate completionRate as 0 when no tasks exist', () => {
+      component.todo.set([]);
+      component.doing.set([]);
+      component.done.set([]);
+
+      expect(component.completionRate()).toBe(0);
+    });
+
+    it('should calculate completionRate as 100 when all tasks are done', () => {
+      const allTasks = [...component.todo(), ...component.doing(), ...component.done()];
+
+      component.todo.set([]);
+      component.doing.set([]);
+      component.done.set(allTasks);
+
+      expect(component.completionRate()).toBe(100);
+    });
+
+    it('should calculate completionRate as 50 with half tasks done', () => {
+      const allTasks = [...component.todo(), ...component.doing(), ...component.done()];
+      const halfCount = Math.floor(allTasks.length / 2);
+
+      component.todo.set(allTasks.slice(halfCount));
+      component.doing.set([]);
+      component.done.set(allTasks.slice(0, halfCount));
+
+      const expectedRate = (halfCount / allTasks.length) * 100;
+      expect(component.completionRate()).toBe(expectedRate);
+    });
+  });
+
+  describe('updateSignalByContainerId', () => {
+    it('should update todo signal when called with todo-column id', () => {
+      const initialTodo = component.todo();
+      const newTodo = [...initialTodo, {
+        id: 'new-todo',
+        title: 'New Todo',
+        description: 'Test',
+        status: 'TODO' as const,
+        createdAt: new Date(),
+        createdById: '',
+        createdBy: '',
+        assignedToId: '',
+        assignedTo: '',
+      }];
+
+      component.todo.set(newTodo);
+      (component as any).updateSignalByContainerId('todo-column');
+
+      expect(component.todo()).toEqual(newTodo);
+    });
+
+    it('should update doing signal when called with doing-column id', () => {
+      const initialDoing = component.doing();
+      const newDoing = [...initialDoing, {
+        id: 'new-doing',
+        title: 'New Doing',
+        description: 'Test',
+        status: 'DOING' as const,
+        createdAt: new Date(),
+        createdById: '',
+        createdBy: '',
+        assignedToId: '',
+        assignedTo: '',
+      }];
+
+      component.doing.set(newDoing);
+      (component as any).updateSignalByContainerId('doing-column');
+
+      expect(component.doing()).toEqual(newDoing);
+    });
+
+    it('should update done signal when called with done-column id', () => {
+      const initialDone = component.done();
+      const newDone = [...initialDone, {
+        id: 'new-done',
+        title: 'New Done',
+        description: 'Test',
+        status: 'DONE' as const,
+        createdAt: new Date(),
+        createdById: '',
+        createdBy: '',
+        assignedToId: '',
+        assignedTo: '',
+      }];
+
+      component.done.set(newDone);
+      (component as any).updateSignalByContainerId('done-column');
+
+      expect(component.done()).toEqual(newDone);
+    });
+
+    it('should trigger signal update to reflect changes in computed signals', () => {
+      const initialTotal = component.totalTasks();
+      const newTask: Task = {
+        id: 'new-task-test',
+        title: 'New Task Test',
+        description: 'Test',
+        status: 'TODO',
+        createdAt: new Date(),
+        createdById: '',
+        createdBy: '',
+        assignedToId: '',
+        assignedTo: '',
+      };
+
+      component.todo.update((tasks) => [...tasks, newTask]);
+      (component as any).updateSignalByContainerId('todo-column');
+
+      expect(component.totalTasks()).toBe(initialTotal + 1);
     });
   });
 });

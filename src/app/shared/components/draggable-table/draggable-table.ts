@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal, WritableSignal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal, computed, WritableSignal, Signal } from '@angular/core';
 
 import {
   CdkDropListGroup,
@@ -17,6 +17,12 @@ import { DraggableColumn, DraggableItem } from './components/index';
   selector: 'app-draggable-table',
   imports: [CdkDropListGroup, CdkDropList, CdkDrag, DraggableColumn, DraggableItem],
   template: `
+    <!-- TODO: Change to stats component -->
+    <div class="w-100 flex gap-4">
+      <span>TOTAL: {{totalTasks()}}</span>
+      <span>IN PROGRESS: {{tasksInProgress()}}</span>
+      <span>COMPLETION RATE: {{completionRate()}} %</span>
+    </div>
     <div cdkDropListGroup class="py-2 grid grid-cols-1 md:grid-cols-3 gap-6">
       <app-draggable-column
         id="todo-column"
@@ -148,13 +154,41 @@ export class DraggableTable {
     },
   ]);
 
+  totalTasks = computed(() => this.todo().length + this.doing().length + this.done().length);
+
+  tasksInProgress = computed(() => this.doing().length);
+
+  completionRate = computed(() => {
+    const total = this.totalTasks();
+    return total === 0 ? 0 : (this.done().length / total) * 100;
+  });
+
+  private updateSignalByContainerId(containerId: string): void {
+    if (containerId === 'todo-column') {
+      this.todo.set([...this.todo()]);
+    } else if (containerId === 'doing-column') {
+      this.doing.set([...this.doing()]);
+    } else if (containerId === 'done-column') {
+      this.done.set([...this.done()]);
+    }
+  }
+
+  private handleTaskStatusChange(task: Task, targetColumn: TaskStatus) {
+    const previousStatus = task.status;
+    task.status = targetColumn;
+  }
+
   drop(event: CdkDragDrop<Task[]>) {
     const { previousIndex, currentIndex, container, previousContainer } = event;
 
     if (previousContainer.id === container.id) {
       moveItemInArray(container.data, previousIndex, currentIndex);
+      this.updateSignalByContainerId(container.id);
     } else {
       transferArrayItem(previousContainer.data, container.data, previousIndex, currentIndex);
+      this.updateSignalByContainerId(previousContainer.id);
+      this.updateSignalByContainerId(container.id);
+
       const task: Task = container.data[currentIndex];
       const columnId = container.id;
       const targetColumn = this.statusMap[columnId];
@@ -162,10 +196,4 @@ export class DraggableTable {
     }
   }
 
-  handleTaskStatusChange(task: Task, targetColumn: TaskStatus) {
-    const previousStatus = task.status;
-    task.status = targetColumn;
-
-    console.log(task);
-  }
 }

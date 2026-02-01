@@ -67,13 +67,13 @@
 ## 📅 DÍA 2: Computed Signals y Effects
 
 ### 🎓 Teoría (2 horas)
-- [ ] Estudiar `computed()` - signals derivados
-- [ ] Entender `effect()` - side effects reactivos
-- [ ] Leer sobre: [Signals Deep Dive](https://blog.angular.dev/angular-v16-is-here-4d7a28ec680d)
-- [ ] Lazy evaluation y memoization
+- [✅] Estudiar `computed()` - signals derivados
+- [✅] Entender `effect()` - side effects reactivos
+- [✅] Leer sobre: [Signals Deep Dive](https://blog.angular.dev/angular-v16-is-here-4d7a28ec680d)
+- [✅] Lazy evaluation y memoization
 
 ### 💻 Práctica en NgHomePlanner (3-4 horas)
-- [ ] **Tarea 2.1**: Crear computed signals para estadísticas del Kanban
+- [✅] **Tarea 2.1**: Crear computed signals para estadísticas del Kanban
   ```typescript
   totalTasks = computed(() => 
     this.todo().length + this.doing().length + this.done().length
