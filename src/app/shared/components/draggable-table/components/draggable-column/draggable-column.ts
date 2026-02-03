@@ -6,9 +6,9 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   template: `
     <!-- Column Header -->
     <div id="column-header" class="p-2 flex justify-center">
-      <h3 class="w-[95%] font-bold">
+      <h5 class="w-[95%] font-bold">
         <ng-content select="[column-title]" />
-      </h3>
+      </h5>
       <span>X</span>
     </div>
     <!-- Column Body -->

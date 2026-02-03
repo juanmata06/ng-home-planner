@@ -5,9 +5,9 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   imports: [],
   template: `
     <nav class="flex justify-between items-center gap-4">
-      <h2 class="font-bold">
+      <h3 class="font-bold">
         {{ 'Week 19 - 25 / JAN' }}
-      </h2>
+      </h3>
       <input type="text" />
     </nav>
   `,

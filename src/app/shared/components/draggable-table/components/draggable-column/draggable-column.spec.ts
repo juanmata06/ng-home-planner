@@ -28,8 +28,8 @@ describe('DraggableColumn', () => {
 
     // Verify the structure contains the header where column-title ng-content would be projected
     expect(columnHeader).toBeTruthy();
-    const h3 = columnHeader.querySelector('h3');
-    expect(h3).toBeTruthy();
+    const h5 = columnHeader.querySelector('h5');
+    expect(h5).toBeTruthy();
   });
 
   it('should have ng-content with column-body selector', () => {

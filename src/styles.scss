@@ -1,2 +1,57 @@
 @use './app/styles/tailwind-config.scss';
 @use './app/styles/draggable.scss';
+
+html,
+body {
+  background-color: var(--color-gray-light);
+}
+
+body {
+  font-family: var(--font-nunito);
+}
+
+@for $i from 1 through 6 {
+  h#{$i} {
+    color: var(--color-gray-dark);
+    font-size: var(--text-size-h#{$i});
+    font-weight: 900;
+    letter-spacing: -0.025rem;
+    line-height: 2.5rem;
+  }
+}
+
+p,
+input,
+select,
+select option:not([disabled]),
+textarea {
+  color: var(--color-gray-dark);
+  font-size: var(--text-size-body);
+}
+
+span,
+label,
+dt {
+  color: var(--color-gray-dark);
+  font-size: var(--text-size-body-small);
+}
+
+small,
+dd {
+  color: var(--color-gray-dark);
+  font-size: var(--text-size-body-xsmall);
+}
+
+input::placeholder,
+textarea::placeholder,
+select::placeholder,
+select option[disabled] {
+  color: var(--color-gray-medium);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--color-gray-medium);
+  outline-color: var(--color-gray-medium);
+}

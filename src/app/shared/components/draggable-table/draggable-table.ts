@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, signal, computed, WritableSignal, Signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  signal,
+  computed,
+  WritableSignal,
+  Signal,
+} from '@angular/core';
 
 import {
   CdkDropListGroup,
@@ -9,20 +16,43 @@ import {
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
 
-import { Task, TaskStatus } from '@shared/index';
+import { Task, TaskStatus, CardComponent, StatsBanner } from '@shared/index';
 
 import { DraggableColumn, DraggableItem } from './components/index';
 
 @Component({
   selector: 'app-draggable-table',
-  imports: [CdkDropListGroup, CdkDropList, CdkDrag, DraggableColumn, DraggableItem],
+  imports: [
+    CdkDropListGroup,
+    CdkDropList,
+    CdkDrag,
+    DraggableColumn,
+    DraggableItem,
+    StatsBanner,
+    CardComponent,
+  ],
   template: `
     <!-- TODO: Change to stats component -->
-    <div class="w-100 flex gap-4">
-      <span>TOTAL: {{totalTasks()}}</span>
-      <span>IN PROGRESS: {{tasksInProgress()}}</span>
-      <span>COMPLETION RATE: {{completionRate()}} %</span>
-    </div>
+    <app-stats-banner>
+      <app-card class="min-w-[340px] max-w-[20%]! block! text-center">
+        <span class="text-size-h4!">
+          TOTAL:
+          <span class="font-bold text-size-h4!">{{ totalTasks() }}</span>
+        </span>
+      </app-card>
+      <app-card class="min-w-[340px] max-w-[20%]! block! text-center">
+        <span class="text-size-h4!">
+          IN PROGRESS:
+          <span class="font-bold text-size-h4!">{{ tasksInProgress() }}</span>
+        </span>
+      </app-card>
+      <app-card class="min-w-[340px] max-w-[20%]! block! text-center">
+        <span class="text-size-h4!">
+          COMPLETION RATE:
+          <span class="font-bold text-size-h4!">{{ completionRate() }} %</span>
+        </span>
+      </app-card>
+    </app-stats-banner>
     <div cdkDropListGroup class="py-2 grid grid-cols-1 md:grid-cols-3 gap-6">
       <app-draggable-column
         id="todo-column"
@@ -195,5 +225,4 @@ export class DraggableTable {
       this.handleTaskStatusChange(task, targetColumn);
     }
   }
-
 }
