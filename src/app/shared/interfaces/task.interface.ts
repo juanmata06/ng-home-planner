@@ -14,3 +14,10 @@ export interface Task {
   assignedToId: string;
   assignedTo: any;
 }
+
+export interface FakeApiTask {
+  userId: number;
+  id: number;
+  title: string;
+  completed: boolean;
+}

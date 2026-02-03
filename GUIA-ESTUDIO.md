@@ -88,7 +88,7 @@
   tasksInProgress = computed(() => this.doing().length);
   ```
 
-- [ ] **Tarea 2.2**: Crear componente `KanbanStats` para mostrar estadísticas
+- [✅] **Tarea 2.2**: Crear componente `KanbanStats` para mostrar estadísticas
   ```bash
   ng generate component shared/components/kanban-stats --standalone --change-detection OnPush --inline-template
   ```
