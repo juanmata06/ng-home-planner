@@ -11,6 +11,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { RouterLink } from '@angular/router';
 
 import { ReplaySubject } from 'rxjs';
+import { CustomButton } from "../custom-button/custom-button";
 
 // import { MatCheckboxModule } from '@angular/material/checkbox';
 // import { ButtonComponent } from '../button/button.component';
@@ -18,17 +19,18 @@ import { ReplaySubject } from 'rxjs';
 @Component({
   selector: 'app-register-form',
   imports: [
-    ReactiveFormsModule, 
+    ReactiveFormsModule,
     // MatCheckboxModule, 
     // ButtonComponent, 
-    RouterLink
-  ],
+    RouterLink,
+    CustomButton
+],
   template: `
     <form [formGroup]="form" (submit)="submitForm()" class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <!-- Name -->
       <div class="flex flex-col">
         <label for="fullName" class="mb-1 text-white!"> Full name* </label>
-        <input type="text" id="fullName" placeholder="John Doe" class="p-3 rounded-lg bg-white" />
+        <input type="text" id="fullName" placeholder="John Doe" />
       </div>
 
       <!-- Email -->
@@ -38,7 +40,6 @@ import { ReplaySubject } from 'rxjs';
           type="email"
           id="email"
           placeholder="company@email.com"
-          class="p-3 rounded-lg bg-white"
         />
       </div>
 
@@ -49,7 +50,6 @@ import { ReplaySubject } from 'rxjs';
           type="password"
           id="password"
           placeholder="********"
-          class="p-3 rounded-lg bg-white"
         />
       </div>
 
@@ -60,7 +60,6 @@ import { ReplaySubject } from 'rxjs';
           type="password"
           id="passwordConfirmation"
           placeholder="********"
-          class="p-3 rounded-lg bg-white"
         />
       </div>
 
@@ -74,14 +73,13 @@ import { ReplaySubject } from 'rxjs';
 
       <!-- Register (submit) -->
       <div class="flex flex-col col-span-full justify-center items-center">
-        <button type="submit" class="text-white bg-primary rounded-md px-4 py-2 cursor-pointer hover:opacity-90">
+        <app-custom-button type="submit">
           Register
-        </button>
+        </app-custom-button>
 
-        <label for="submit-button" class="mt-6 text-white!">
+        <label for="submit-button" class="mt-6">
           ¿Already have an account? You can
-          <a [routerLink]="'/login'" class="uppercase"><strong>login</strong></a
-          >.
+          <a [routerLink]="'/login'" class="uppercase"><strong>login</strong></a>.
         </label>
       </div>
     </form>

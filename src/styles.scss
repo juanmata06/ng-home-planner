@@ -29,6 +29,10 @@ textarea {
   font-size: var(--text-size-body);
 }
 
+input{
+  @apply p-2 rounded-lg bg-white border border-gray-strong;
+}
+
 span,
 label,
 dt {
@@ -46,12 +50,13 @@ input::placeholder,
 textarea::placeholder,
 select::placeholder,
 select option[disabled] {
-  color: var(--color-gray-medium);
+  @apply text-gray-medium;
 }
 
+a:focus,
 input:focus,
 textarea:focus,
-select:focus {
-  border-color: var(--color-gray-medium);
-  outline-color: var(--color-gray-medium);
+select:focus,
+button:focus {
+  @apply focus:outline-none focus:border-2 focus:rounded-md focus:border-gray-strong
 }

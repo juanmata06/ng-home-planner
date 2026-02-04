@@ -1,10 +1,13 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
+import { FontAwesomeModule, IconDefinition } from '@fortawesome/angular-fontawesome';
+import { faCheck } from '@fortawesome/free-solid-svg-icons';
+
 import { RegisterFormComponent, CardComponent } from '@shared/components';
 
 @Component({
   selector: 'app-register-page',
-  imports: [RegisterFormComponent, CardComponent],
+  imports: [RegisterFormComponent, FontAwesomeModule, CardComponent],
   template: `
     <div class="flex max-w-7xl m-auto p-4 items-center h-screen gap-6">
       <div class="flex flex-col md:flex-row items-center md:items-stretch w-full gap-8">
@@ -20,19 +23,19 @@ import { RegisterFormComponent, CardComponent } from '@shared/components';
           <div class="p-4">
             <ul>
               <li class="flex items-center gap-2">
-                <!-- <fa-icon [icon]="faCheck" matListItemIcon /> --> X
+                <fa-icon [icon]="faCheck" matListItemIcon />
                 <span>
                   {{ 'Completely free of charge' }}
                 </span>
               </li>
               <li class="flex items-center gap-2">
-                <!-- <fa-icon [icon]="faCheck" matListItemIcon /> --> X
+                <fa-icon [icon]="faCheck" matListItemIcon />
                 <span>
                   {{ 'Book the best suTable timeslot for you' }}
                 </span>
               </li>
               <li class="flex items-center gap-2">
-                <!-- <fa-icon [icon]="faCheck" matListItemIcon /> --> X
+                <fa-icon [icon]="faCheck" matListItemIcon />
                 <span>
                   {{ 'See Clerk in action with your own products' }}
                 </span>
@@ -40,7 +43,7 @@ import { RegisterFormComponent, CardComponent } from '@shared/components';
             </ul>
           </div>
         </app-card>
-        <app-card class="w-full md:w-1/2 bg-black!">
+        <app-card class="w-full md:w-1/2 ">
           <app-register-form class="p-4" />
         </app-card>
       </div>
@@ -48,4 +51,6 @@ import { RegisterFormComponent, CardComponent } from '@shared/components';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class RegisterPage {}
+export default class RegisterPage {
+  readonly faCheck: IconDefinition = faCheck;
+}
