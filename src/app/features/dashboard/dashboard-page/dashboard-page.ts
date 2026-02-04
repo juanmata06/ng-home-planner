@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
-import { Dashboard } from "../components/index";
+import { Dashboard } from "@features/dashboard/components";
 
 @Component({
   selector: 'app-dashboard-page',

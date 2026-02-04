@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { CardComponent, DraggableTable } from '@shared/components';
 
-import { CustomDashboardHeader } from '../custom-dashboard-header/custom-dashboard-header';
+import { CustomDashboardHeader } from '@features/dashboard/components/custom-dashboard-header/custom-dashboard-header';
 
 @Component({
   selector: 'app-dashboard',

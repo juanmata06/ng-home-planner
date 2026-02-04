@@ -1,9 +1,12 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-auth-area',
-  imports: [],
-  template: `<p>auth-area works!</p>`,
+  imports: [RouterOutlet],
+  template: `
+    <router-outlet />
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AuthArea { }
+export default class AuthArea {}
