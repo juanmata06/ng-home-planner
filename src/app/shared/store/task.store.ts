@@ -32,7 +32,7 @@ export const TasksStore = signalStore(
     completionRate: computed(() => {
       const total = store.tasks().length;
       const done = filteredTasks(store.tasks(), 'DONE').length;
-      return total > 0 ? (done / total) * 100 : 0;
+      return total > 0 ? Math.round(((done / total) * 100) * 100) / 100 : 0;
     }),
   })),
   withMethods((
@@ -50,6 +50,18 @@ export const TasksStore = signalStore(
           patchState(store, { 
             tasks, 
             isTasksLoading: false 
+          });
+        });
+    },
+    updateTask: (id: string, status: TaskStatus): void => {
+      taskService
+        .updateStatusTask(Number(id), status)
+        .pipe(takeUntil(destroy$))
+        .subscribe(() => {
+          patchState(store, {
+            tasks: store
+              .tasks()
+              .map((task) => (`${task.id}` === `${id}` ? { ...task, status } : task)),
           });
         });
     },

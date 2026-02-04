@@ -95,7 +95,7 @@
   - Mostrar: Total tareas, % completadas, Tareas en progreso
   - Usar Tailwind para crear cards con las métricas
 
-- [ ] **Tarea 2.3**: Implementar effect para persistencia en localStorage
+- [✅] **Tarea 2.3**: Implementar effect para persistencia en localStorage
   ```typescript
   constructor() {
     effect(() => {
@@ -106,21 +106,21 @@
   }
   ```
 
-- [ ] **Tarea 2.4**: Cargar datos desde localStorage en `ngOnInit()`
+- [✅] **Tarea 2.4**: Cargar datos desde localStorage en `ngOnInit()`
 
 ### 📝 Checkpoint del Día
-- [ ] Dashboard muestra estadísticas en tiempo real
-- [ ] Los datos persisten al recargar la página
-- [ ] Commit: `feat: add computed stats and localStorage persistence`
+- [✅] Dashboard muestra estadísticas en tiempo real
+- [✅] Los datos persisten al recargar la página
+- [✅] Commit: `feat: add computed stats and localStorage persistence`
 
 ---
 
 ## 📅 DÍA 3: NGRX SignalStore - Introducción
 
 ### 🎓 Teoría (2-3 horas)
-- [ ] Documentación oficial: [NGRX SignalStore](https://ngrx.io/guide/signals)
-- [ ] Instalación: `npm install @ngrx/signals`
-- [ ] Conceptos fundamentales:
+- [✅ ] Documentación oficial: [NGRX SignalStore](https://ngrx.io/guide/signals)
+- [✅ ] Instalación: `npm install @ngrx/signals`
+- [✅ ] Conceptos fundamentales:
   - `signalStore()` - crear stores
   - `withState()` - definir estado inicial
   - `withMethods()` - acciones/mutaciones
@@ -128,12 +128,12 @@
   - `withHooks()` - lifecycle hooks
 
 ### 💻 Práctica en NgHomePlanner (3 horas)
-- [ ] **Tarea 3.1**: Instalar NGRX Signals
+- [✅ ] **Tarea 3.1**: Instalar NGRX Signals
   ```bash
   npm install @ngrx/signals
   ```
 
-- [ ] **Tarea 3.2**: Crear `TaskStore` en `src/app/shared/stores/task.store.ts`
+- [ ✅] **Tarea 3.2**: Crear `TaskStore` en `src/app/shared/stores/task.store.ts`
   ```typescript
   import { signalStore, withState, withMethods, withComputed } from '@ngrx/signals';
   import { Task, TaskStatus } from '@shared/interfaces';
@@ -168,9 +168,9 @@
   );
   ```
 
-- [ ] **Tarea 3.3**: Crear `index.ts` en stores: `export * from './task.store';`
+- [✅ ] **Tarea 3.3**: Crear `index.ts` en stores: `export * from './task.store';`
 
-- [ ] **Tarea 3.4**: Actualizar `tsconfig.json` con path alias
+- [✅ ] **Tarea 3.4**: Actualizar `tsconfig.json` con path alias
   ```json
   "@stores/*": ["app/shared/stores/*"],
   "@services/*": ["app/shared/services/*"],

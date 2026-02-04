@@ -19,8 +19,8 @@ import {
 
 import { TasksStore } from '@shared/store';
 import { Task, TaskStatus } from '@shared/interfaces';
-import { CardComponent} from '@shared/components/card/card.component';
-import {StatsBanner} from '@shared/components/stats-banner/stats-banner';
+import { CardComponent } from '@shared/components/card/card.component';
+import { StatsBanner } from '@shared/components/stats-banner/stats-banner';
 import { DraggableColumn, DraggableItem } from '@shared/components/draggable-table/components';
 
 @Component({
@@ -35,7 +35,6 @@ import { DraggableColumn, DraggableItem } from '@shared/components/draggable-tab
     CardComponent,
   ],
   template: `
-    <!-- TODO: Change to stats component -->
     <app-stats-banner>
       <app-card class="min-w-[340px] max-w-[20%]! block! text-center">
         <span class="text-size-h4!">
@@ -43,16 +42,17 @@ import { DraggableColumn, DraggableItem } from '@shared/components/draggable-tab
           <span class="font-bold text-size-h4!">{{ tasksStore.totalTasks() }}</span>
         </span>
       </app-card>
-      <app-card class="min-w-[340px] max-w-[20%]! block! text-center">
+      <!-- TODO: -->
+      <!-- <app-card class="min-w-[340px] max-w-[20%]! block! text-center">
         <span class="text-size-h4!">
           IN PROGRESS:
           <span class="font-bold text-size-h4!">{{ tasksStore.tasksInProgress() }}</span>
         </span>
-      </app-card>
+      </app-card> -->
       <app-card class="min-w-[340px] max-w-[20%]! block! text-center">
         <span class="text-size-h4!">
           COMPLETION RATE:
-          <span class="font-bold text-size-h4!">{{ tasksStore.completionRate() }} %</span>
+          <span class="font-bold text-size-h4!">{{ tasksStore.completionRate() }}%</span>
         </span>
       </app-card>
     </app-stats-banner>
@@ -74,7 +74,8 @@ import { DraggableColumn, DraggableItem } from '@shared/components/draggable-tab
           }
         </ng-container>
       </app-draggable-column>
-      <app-draggable-column
+      <!-- TODO: -->
+      <!-- <app-draggable-column
         id="doing-column"
         cdkDropList
         [cdkDropListData]="tasksStore.doingTasks()"
@@ -90,7 +91,7 @@ import { DraggableColumn, DraggableItem } from '@shared/components/draggable-tab
             </app-draggable-item>
           }
         </ng-container>
-      </app-draggable-column>
+      </app-draggable-column> -->
       <app-draggable-column
         id="done-column"
         cdkDropList
@@ -113,7 +114,7 @@ import { DraggableColumn, DraggableItem } from '@shared/components/draggable-tab
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DraggableTable {
-  tasksStore = inject(TasksStore);
+  readonly tasksStore = inject(TasksStore);
 
   readonly statusMap: Record<string, TaskStatus> = {
     'todo-column': 'TODO',
@@ -121,36 +122,14 @@ export class DraggableTable {
     'done-column': 'DONE',
   };
 
-  // private updateSignalByContainerId(containerId: string): void {
-  //   if (containerId === 'todo-column') {
-  //     this.todo.set([...this.todo()]);
-  //   } else if (containerId === 'doing-column') {
-  //     this.doing.set([...this.doing()]);
-  //   } else if (containerId === 'done-column') {
-  //     this.done.set([...this.done()]);
-  //   }
-  // }
-
-  // private handleTaskStatusChange(task: Task, targetColumn: TaskStatus) {
-  //   const previousStatus = task.status;
-  //   task.status = targetColumn;
-  // }
-
   drop(event: CdkDragDrop<Task[]>) {
     const { previousIndex, currentIndex, container, previousContainer } = event;
-
-    if (previousContainer.id === container.id) {
-      moveItemInArray(container.data, previousIndex, currentIndex);
-      // this.updateSignalByContainerId(container.id);
-    } else {
+    if (previousContainer.id !== container.id) {
       transferArrayItem(previousContainer.data, container.data, previousIndex, currentIndex);
-      // this.updateSignalByContainerId(previousContainer.id);
-      // this.updateSignalByContainerId(container.id);
-
       const task: Task = container.data[currentIndex];
       const columnId = container.id;
       const targetColumn = this.statusMap[columnId];
-      // this.handleTaskStatusChange(task, targetColumn);
+      this.tasksStore.updateTask(task.id, targetColumn);
     }
   }
 }

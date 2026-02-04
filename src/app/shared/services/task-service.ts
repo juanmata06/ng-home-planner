@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 
 // TODO: use import { environment } from '@environments/environment';
-import { Task, FakeApiTask } from '../interfaces/index';
+import { Task, FakeApiTask, TaskStatus } from '../interfaces/index';
 import { mapFakeApiTaskToTask } from '../mappers/index';
 
 @Injectable({
@@ -25,6 +25,12 @@ export class TaskService {
             .map((fakeTask) => mapFakeApiTaskToTask(fakeTask)),
         ),
       );
+  }
+
+  public updateStatusTask(id: number, status: TaskStatus): Observable<void> {
+    return this._httpClient.put<void>(`${this.tasksUrl}/${id}`, {
+      completed: status == 'DONE' ? true : false,
+    });
   }
 
   public deleteTask(id: number): Observable<void> {
