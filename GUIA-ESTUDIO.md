@@ -105,9 +105,7 @@
     });
   }
   ```
-
-- [✅] **Tarea 2.4**: Cargar datos desde localStorage en `ngOnInit()`
-
+  
 ### 📝 Checkpoint del Día
 - [✅] Dashboard muestra estadísticas en tiempo real
 - [✅] Los datos persisten al recargar la página

@@ -12,7 +12,7 @@ import { mapFakeApiTaskToTask } from '../mappers/index';
 })
 export class TaskService {
   private readonly apiUrl = 'https://jsonplaceholder.typicode.com';
-  private _httpClient = inject(HttpClient);
+  private readonly _httpClient = inject(HttpClient);
   private readonly tasksUrl = `${this.apiUrl}/todos`;
 
   public getAllTasks(): Observable<Task[]> {

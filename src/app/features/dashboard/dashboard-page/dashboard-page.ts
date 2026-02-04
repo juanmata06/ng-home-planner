@@ -10,4 +10,4 @@ import { Dashboard } from "../components/index";
   </div>`,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class DashboardPage { }
+export default class DashboardPage { } // TODO: llamar store desde aqui
