@@ -6,12 +6,19 @@ import {
   OnInit,
   output,
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+  FormControl,
+} from '@angular/forms';
 import { RouterLink } from '@angular/router';
 
 import { ReplaySubject } from 'rxjs';
-import { CustomButton } from "../custom-button/custom-button";
+
+import { CustomButton } from '@shared/components/custom-button/custom-button';
+import { CustomCheckbox } from '@shared/components/custom-checkbox/custom-checkbox';
 
 // import { MatCheckboxModule } from '@angular/material/checkbox';
 // import { ButtonComponent } from '../button/button.component';
@@ -20,37 +27,30 @@ import { CustomButton } from "../custom-button/custom-button";
   selector: 'app-register-form',
   imports: [
     ReactiveFormsModule,
-    // MatCheckboxModule, 
-    // ButtonComponent, 
+    // MatCheckboxModule,
+    // ButtonComponent,
     RouterLink,
-    CustomButton
-],
+    CustomButton,
+    CustomCheckbox,
+  ],
   template: `
     <form [formGroup]="form" (submit)="submitForm()" class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <!-- Name -->
       <div class="flex flex-col">
-        <label for="fullName" class="mb-1 text-white!"> Full name* </label>
-        <input type="text" id="fullName" placeholder="John Doe" />
+        <label for="name" class="mb-1 text-white!"> Full name* </label>
+        <input type="text" id="name" placeholder="John Doe" formControlName="name" />
       </div>
 
       <!-- Email -->
       <div class="flex flex-col">
-        <label for="companyEmail" class="mb-1 text-white!">Email*</label>
-        <input
-          type="email"
-          id="email"
-          placeholder="company@email.com"
-        />
+        <label for="email" class="mb-1 text-white!">Email*</label>
+        <input type="email" id="email" placeholder="company@email.com" formControlName="email" />
       </div>
 
       <!-- Password -->
       <div class="flex flex-col">
         <label for="password" class="mb-1 text-white!">Password*</label>
-        <input
-          type="password"
-          id="password"
-          placeholder="********"
-        />
+        <input type="password" id="password" placeholder="********" formControlName="password" />
       </div>
 
       <!-- Password confirmation -->
@@ -60,12 +60,15 @@ import { CustomButton } from "../custom-button/custom-button";
           type="password"
           id="passwordConfirmation"
           placeholder="********"
+          formControlName="passwordConfirmation"
         />
       </div>
 
       <!-- Communications -->
-      <div class="flex flex-row md:col-span-2">
-        <input type="checkbox" name="" id="">
+      <div class="flex flex-row md:col-span-2 items-center gap-2">
+        <app-custom-checkbox 
+          [control]="form.controls['communications']"
+          />
         <label for="communications" class="text-white!">
           {{ 'I agree to receive other communications from My Learning' }}.
         </label>
@@ -73,13 +76,12 @@ import { CustomButton } from "../custom-button/custom-button";
 
       <!-- Register (submit) -->
       <div class="flex flex-col col-span-full justify-center items-center">
-        <app-custom-button type="submit">
-          Register
-        </app-custom-button>
+        <app-custom-button type="submit"> Register </app-custom-button>
 
-        <label for="submit-button" class="mt-6">
+        <label for="submit-button" class="mt-6 text-white!">
           ¿Already have an account? You can
-          <a [routerLink]="'/login'" class="uppercase"><strong>login</strong></a>.
+          <a [routerLink]="'/login'" class="uppercase"><strong>login</strong></a
+          >.
         </label>
       </div>
     </form>
@@ -95,9 +97,14 @@ export class RegisterFormComponent implements OnInit, OnDestroy {
    * General vars
    * ------------------------------------------------------------------------------------------------------------------------------
    */
-  form!: FormGroup;
+  protected form = new FormGroup({
+    name: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [Validators.required]),
+    passwordConfirmation: new FormControl('', [Validators.required]),
+    communications: new FormControl(false, { nonNullable: true, validators: [Validators.requiredTrue] }),
+  });
   private _unsubscribeAll: ReplaySubject<boolean> = new ReplaySubject(1);
-  private _formBuilder: FormBuilder = inject(FormBuilder);
   public formSubmitted = output<boolean>();
 
   /**
@@ -119,18 +126,10 @@ export class RegisterFormComponent implements OnInit, OnDestroy {
    * PRIVATE METHODS
    * ------------------------------------------------------------------------------------------------------------------------------
    */
-  private createForm(): void {
-    this.form = this._formBuilder.group({
-      name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
-      email: ['', [Validators.required]],
-      password: ['', [Validators.required]],
-      passwordConfirmation: ['', [Validators.required]],
-      communications: [false],
-    });
-  }
+  private createForm(): void {}
 
   public emitFormValue(): void {
-    this.formSubmitted.emit(this.form.value);
+    // this.formSubmitted.emit(this.form.value);
   }
   /**
    * ------------------------------------------------------------------------------------------------------------------------------
@@ -144,6 +143,8 @@ export class RegisterFormComponent implements OnInit, OnDestroy {
    * ------------------------------------------------------------------------------------------------------------------------------
    */
   submitForm() {
+    console.log(this.form.value);
+
     //TODO: make her form validations and alert messages
     this.emitFormValue();
   }

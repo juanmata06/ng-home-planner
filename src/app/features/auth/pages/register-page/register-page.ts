@@ -9,9 +9,9 @@ import { RegisterFormComponent, CardComponent } from '@shared/components';
   selector: 'app-register-page',
   imports: [RegisterFormComponent, FontAwesomeModule, CardComponent],
   template: `
-    <div class="flex max-w-7xl m-auto p-4 items-center h-screen gap-6">
+    <div class="flex max-w-7xl m-auto p-4 items-center min-h-screen gap-6">
       <div class="flex flex-col md:flex-row items-center md:items-stretch w-full gap-8">
-        <app-card class="flex-col w-full md:w-1/2">
+        <app-card class="flex-col w-full md:w-1/2 min-h-[400px]">
           <div class="p-4">
             <div class="flex flex-col align-middle text-left">
               <h3 class="pb-4 select-none">
@@ -43,7 +43,7 @@ import { RegisterFormComponent, CardComponent } from '@shared/components';
             </ul>
           </div>
         </app-card>
-        <app-card class="w-full md:w-1/2 ">
+        <app-card class="w-full md:w-1/2 bg-black! min-h-[400px]">
           <app-register-form class="p-4" />
         </app-card>
       </div>
