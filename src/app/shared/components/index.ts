@@ -1,6 +1,7 @@
 export * from './card/card.component';
 export * from './custom-button/custom-button';
 export * from './custom-checkbox/custom-checkbox';
+export * from './loading-spinner/loading-spinner';
 export * from './custom-header/custom-header';
 export * from './stats-banner/stats-banner';
 export * from './draggable-table/draggable-table';

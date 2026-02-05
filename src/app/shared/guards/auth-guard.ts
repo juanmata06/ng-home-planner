@@ -13,5 +13,5 @@ export const authGuard: CanActivateChildFn = (childRoute, state) => {
     token: authStore.token(),
   });
 
-  return authStore.isLoggedIn() ? true : router.createUrlTree(['/login']);
+  return (authStore.isLoggedIn() && !authStore.isAuthLoading()) ? true : router.createUrlTree(['/login']);
 };
