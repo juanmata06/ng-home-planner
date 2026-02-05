@@ -2,7 +2,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
-  OnDestroy,
   OnInit,
   output,
 } from '@angular/core';
@@ -15,14 +14,8 @@ import {
 } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 
-import { ReplaySubject } from 'rxjs';
-
 import { CustomButton } from '@shared/components/custom-button/custom-button';
 import { CustomCheckbox } from '@shared/components/custom-checkbox/custom-checkbox';
-
-// import { MatCheckboxModule } from '@angular/material/checkbox';
-// import { ButtonComponent } from '../button/button.component';
-
 @Component({
   selector: 'app-register-form',
   imports: [
@@ -66,9 +59,7 @@ import { CustomCheckbox } from '@shared/components/custom-checkbox/custom-checkb
 
       <!-- Communications -->
       <div class="flex flex-row md:col-span-2 items-center gap-2">
-        <app-custom-checkbox 
-          [control]="form.controls['communications']"
-          />
+        <app-custom-checkbox [control]="form.controls['communications']" />
         <label for="communications" class="text-white!">
           {{ 'I agree to receive other communications from My Learning' }}.
         </label>
@@ -80,8 +71,7 @@ import { CustomCheckbox } from '@shared/components/custom-checkbox/custom-checkb
 
         <label for="submit-button" class="mt-6 text-white!">
           ¿Already have an account? You can
-          <a [routerLink]="'/login'" class="uppercase"><strong>login</strong></a
-          >.
+          <a [routerLink]="'/login'" class="uppercase"><strong>login</strong></a>.
         </label>
       </div>
     </form>
@@ -91,21 +81,38 @@ import { CustomCheckbox } from '@shared/components/custom-checkbox/custom-checkb
     class: 'w-full',
   },
 })
-export class RegisterFormComponent implements OnInit, OnDestroy {
+export class RegisterFormComponent implements OnInit {
   /**
    * ------------------------------------------------------------------------------------------------------------------------------
    * General vars
    * ------------------------------------------------------------------------------------------------------------------------------
    */
   protected form = new FormGroup({
-    name: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
-    email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', [Validators.required]),
-    passwordConfirmation: new FormControl('', [Validators.required]),
-    communications: new FormControl(false, { nonNullable: true, validators: [Validators.requiredTrue] }),
+    name: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.minLength(2), Validators.maxLength(50)],
+    }),
+    email: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.email],
+    }),
+    password: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    passwordConfirmation: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
+    communications: new FormControl(false, {
+      nonNullable: true,
+      validators: [Validators.requiredTrue],
+    }),
   });
-  private _unsubscribeAll: ReplaySubject<boolean> = new ReplaySubject(1);
-  public formSubmitted = output<boolean>();
+  public formSubmitted = output<{
+    name?: string;
+    email?: string;
+    password?: string;
+    passwordConfirmation?: string;
+    communications?: boolean;
+  }>();
 
   /**
    * -----------------------------------------------------------------------------------------------------------------------------
@@ -116,11 +123,6 @@ export class RegisterFormComponent implements OnInit, OnDestroy {
     this.createForm();
   }
 
-  ngOnDestroy() {
-    this._unsubscribeAll.next(true);
-    this._unsubscribeAll.complete();
-  }
-
   /**
    * ------------------------------------------------------------------------------------------------------------------------------
    * PRIVATE METHODS
@@ -129,7 +131,7 @@ export class RegisterFormComponent implements OnInit, OnDestroy {
   private createForm(): void {}
 
   public emitFormValue(): void {
-    // this.formSubmitted.emit(this.form.value);
+    this.formSubmitted.emit(this.form.value);
   }
   /**
    * ------------------------------------------------------------------------------------------------------------------------------
@@ -143,8 +145,6 @@ export class RegisterFormComponent implements OnInit, OnDestroy {
    * ------------------------------------------------------------------------------------------------------------------------------
    */
   submitForm() {
-    console.log(this.form.value);
-
     //TODO: make her form validations and alert messages
     this.emitFormValue();
   }

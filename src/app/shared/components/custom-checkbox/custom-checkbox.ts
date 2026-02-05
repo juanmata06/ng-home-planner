@@ -26,7 +26,7 @@ import { Form, FormControl } from '@angular/forms';
         class="peer relative h-5 w-5 cursor-pointer appearance-none border border-gray-medium shadow hover:shadow-md transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-10 before:w-10 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded before:bg-gray-medium before:opacity-0 before:transition-opacity checked:border-gray-strong checked:bg-gray-strong checked:before:bg-gray-light hover:before:opacity-10"
       />
       <span
-        class="pointer-events-none absolute top-2/4 left-1/3 -translate-y-2/4 -translate-x-2/4 text-white opacity-0 transition-opacity peer-checked:opacity-100"
+        class="pointer-events-none absolute top-2/4 left-[35%] -translate-y-2/4 -translate-x-2/4 text-white opacity-0 transition-opacity peer-checked:opacity-100"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

@@ -44,7 +44,10 @@ import { RegisterFormComponent, CardComponent } from '@shared/components';
           </div>
         </app-card>
         <app-card class="w-full md:w-1/2 bg-black! min-h-[400px]">
-          <app-register-form class="p-4" />
+          <app-register-form 
+            class="p-4"
+            (formSubmitted)="onFormSubmitted($event)" 
+          />
         </app-card>
       </div>
     </div>
@@ -53,4 +56,8 @@ import { RegisterFormComponent, CardComponent } from '@shared/components';
 })
 export default class RegisterPage {
   readonly faCheck: IconDefinition = faCheck;
+  
+  onFormSubmitted(formValue: any): void {
+    console.log(formValue);
+  }
 }
