@@ -71,7 +71,7 @@ import { CustomCheckbox } from '@shared/components/custom-checkbox/custom-checkb
 
         <label for="submit-button" class="mt-6 text-white!">
           ¿Already have an account? You can
-          <a [routerLink]="'/login'" class="uppercase"><strong>login</strong></a>.
+          <a [routerLink]="'/auth/login'" class="uppercase"><strong>login</strong></a>.
         </label>
       </div>
     </form>
@@ -133,6 +133,7 @@ export class RegisterFormComponent implements OnInit {
   public emitFormValue(): void {
     this.formSubmitted.emit(this.form.value);
   }
+  
   /**
    * ------------------------------------------------------------------------------------------------------------------------------
    * PRIVATE VALIDATION AND INTERNAL PROCESS METHODS

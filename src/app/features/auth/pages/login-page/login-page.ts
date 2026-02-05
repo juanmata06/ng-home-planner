@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
 import { CardComponent, LoginFormComponent } from '@shared/components';
+import { AuthStore } from '@shared/store';
 
 @Component({
   selector: 'app-login-page',
@@ -9,10 +10,7 @@ import { CardComponent, LoginFormComponent } from '@shared/components';
     <div class="flex max-w-7xl m-auto p-4 items-center min-h-screen gap-6">
       <div class="flex items-center justify-center w-full">
         <app-card class="w-full md:w-1/2 bg-black!">
-          <app-login-form 
-            class="p-4" 
-            (formSubmitted)="onFormSubmitted($event)" 
-          />
+          <app-login-form class="p-4" (formSubmitted)="onFormSubmitted($event)" />
         </app-card>
       </div>
     </div>
@@ -20,7 +18,12 @@ import { CardComponent, LoginFormComponent } from '@shared/components';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class LoginPage {
+  private readonly authStore = inject(AuthStore);
+
   onFormSubmitted(formValue: any): void {
-    console.log(formValue);
+    this.authStore.loginUser({
+      email: formValue.email,
+      password: formValue.password,
+    });
   }
 }

@@ -15,17 +15,13 @@ import {
 import { RouterLink } from '@angular/router';
 
 import { CustomButton } from '@shared/components/custom-button/custom-button';
-import { CustomCheckbox } from '@shared/components/custom-checkbox/custom-checkbox';
 
 @Component({
   selector: 'app-login-form',
   imports: [
     ReactiveFormsModule,
-    // MatCheckboxModule,
-    // ButtonComponent,
     RouterLink,
     CustomButton,
-    CustomCheckbox,
   ],
   template: `
     <form [formGroup]="form" (submit)="submitForm()" class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -47,7 +43,7 @@ import { CustomCheckbox } from '@shared/components/custom-checkbox/custom-checkb
 
         <label for="submit-button" class="mt-6 text-white!">
           ¿Don't have an account yet? You can
-          <a [routerLink]="'/register'" class="uppercase"><strong>register</strong></a>.
+          <a [routerLink]="'/auth/register'" class="uppercase"><strong>register</strong></a>.
         </label>
       </div>
     </form>

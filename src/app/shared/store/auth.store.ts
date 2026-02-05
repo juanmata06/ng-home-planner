@@ -12,6 +12,7 @@ import {
 
 import { LoginResponse, UserLogin, User, UserRegister } from '@shared/interfaces';
 import { AuthService, LocalStorageService } from '@shared/services';
+import { Router } from '@angular/router';
 
 type AuthState = {
   user: User | null;
@@ -37,11 +38,11 @@ export const AuthStore = signalStore(
       authService = inject(AuthService),
       localStorageService = inject(LocalStorageService),
       destroy$ = new Subject<void>(),
+      router: Router = inject(Router),
     ) => ({
       destroySubject: () => destroy$,
       validateUserLogged(): void {
         console.log("Validating user logged");
-        
         patchState(store, { isAuthLoading: true });
         const token = localStorageService.getUserToken();
         const currentUser = store.user();
@@ -67,6 +68,7 @@ export const AuthStore = signalStore(
               token: response.token,
               isAuthLoading: false,
             });
+            router.navigate(['/private-area/dashboard']);
           });
       },
       registerUser: (credentials: UserRegister): void => {
@@ -89,6 +91,7 @@ export const AuthStore = signalStore(
               token: response.token,
               isAuthLoading: false,
             });
+            router.navigate(['/private-area/dashboard']);
           });
       },
       logOutUser: (): void => {

@@ -1,9 +1,26 @@
 import { Routes } from '@angular/router';
 
+import { authGuard } from '@shared/guards/auth-guard';
+
 export const routes: Routes = [
   {
-    path: '',
-    // canMatch: [authGuard],
+    path: 'private-area',
+    canActivateChild: [authGuard],
+    loadComponent: () => import('@layouts/private-area/private-area'),
+    children: [
+      {
+        path: 'dashboard',
+        loadComponent: () => import('@features/dashboard/dashboard-page/dashboard-page'),
+        title: 'Dashboard',
+      },
+      {
+        path: '**',
+        redirectTo: 'dashboard',
+      },
+    ],
+  },
+  {
+    path: 'auth',
     loadComponent: () => import('@layouts/auth-area/auth-area'),
     children: [
       {
@@ -18,28 +35,12 @@ export const routes: Routes = [
       },
       {
         path: '**',
-        redirectTo: 'register',
+        redirectTo: 'login',
       },
     ],
   },
-  // {
-  //   path: '',
-  //   // canMatch: [authGuard],
-  //   loadComponent: () => import('@layouts/private-area/private-area'),
-  //   children: [
-  //     {
-  //       path: 'dashboard',
-  //       loadComponent: () => import('@features/dashboard/dashboard-page/dashboard-page'),
-  //       title: 'Dashboard',
-  //     },
-  //     {
-  //       path: '**',
-  //       redirectTo: 'dashboard',
-  //     },
-  //   ],
-  // },
   // TODO:
   //   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
   //   { path: '**', redirectTo: 'auth' },
-  { path: '**', redirectTo: '' },
+  { path: '**', redirectTo: 'auth' },
 ];

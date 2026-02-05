@@ -1,9 +1,10 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
 import { FontAwesomeModule, IconDefinition } from '@fortawesome/angular-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 
 import { RegisterFormComponent, CardComponent } from '@shared/components';
+import { AuthStore } from '@shared/store/auth.store';
 
 @Component({
   selector: 'app-register-page',
@@ -55,9 +56,16 @@ import { RegisterFormComponent, CardComponent } from '@shared/components';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class RegisterPage {
+  private readonly authStore = inject(AuthStore);
+  
   readonly faCheck: IconDefinition = faCheck;
   
   onFormSubmitted(formValue: any): void {
-    console.log(formValue);
+    this.authStore.registerUser({
+      name: formValue.name,
+      email: formValue.email,
+      password: formValue.password,
+      userRole: 'User',
+    });
   }
 }
