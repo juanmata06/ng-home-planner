@@ -16,6 +16,7 @@ export class TaskService {
   private readonly tasksUrl = `${this.apiUrl}/todos`;
 
   public getAllTasks(): Observable<Task[]> {
+    console.log('TaskService - getAllTasks');
     return this._httpClient
       .get<FakeApiTask[]>(this.tasksUrl)
       .pipe(
@@ -28,12 +29,14 @@ export class TaskService {
   }
 
   public updateStatusTask(id: number, status: TaskStatus): Observable<void> {
+    console.log('TaskService - updateStatusTask');
     return this._httpClient.put<void>(`${this.tasksUrl}/${id}`, {
       completed: status == 'DONE' ? true : false,
     });
   }
 
   public deleteTask(id: number): Observable<void> {
+    console.log('TaskService - deleteTask');
     return this._httpClient.delete<void>(`${this.tasksUrl}/${id}`);
   }
 }

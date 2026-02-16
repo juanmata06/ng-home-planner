@@ -176,7 +176,7 @@
   "@interceptors/*": ["app/shared/interceptors/*"]
   ```
 
-- [ ] **Tarea 3.5**: Crear `AuthStore` básico en `src/app/shared/stores/auth.store.ts`
+- [✅ ] **Tarea 3.5**: Crear `AuthStore` básico en `src/app/shared/stores/auth.store.ts`
   ```typescript
   import { signalStore, withState, withMethods, withComputed } from '@ngrx/signals';
   
@@ -206,7 +206,7 @@
   );
   ```
 
-- [ ] **Tarea 3.6**: Crear interfaz `User` en `src/app/shared/interfaces/user.interface.ts`
+- [ ✅] **Tarea 3.6**: Crear interfaz `User` en `src/app/shared/interfaces/user.interface.ts`
   ```typescript
   export interface User {
     id: string;

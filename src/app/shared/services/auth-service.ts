@@ -16,6 +16,7 @@ export class AuthService {
   private readonly usersUrl = `${this.apiUrl}/users`;
 
   public getAllUsers(): Observable<User[]> {
+    console.log('AuthService - getAllUsers');
     return this._httpClient
       .get<FakeAPIUser[]>(this.usersUrl)
       .pipe(
@@ -28,6 +29,7 @@ export class AuthService {
   }
 
   public registerUser(userRegister: UserRegister): Observable<User> {
+    console.log('AuthService - registerUser');
     const dummyUser: User = {
       id: Date.now().toString(),
       name: userRegister.name,
@@ -38,6 +40,7 @@ export class AuthService {
   }
 
   public loginUser(userLogin: UserLogin): Observable<LoginResponse> {
+    console.log('AuthService - loginUser');
     const dummyUser: User = {
       id: '1',
       name: 'Test User',
@@ -47,6 +50,21 @@ export class AuthService {
     const response: LoginResponse = {
       user: dummyUser,
       token: 'fake-jwt-token-' + Date.now(),
+    };
+    return of(response).pipe(delay(2000));
+  }
+
+  public loginUserByToken(token: string): Observable<LoginResponse> {
+    console.log('AuthService - loginUserByToken');
+    const dummyUser: User = {
+      id: '1',
+      name: 'Test User',
+      email: 'user@example.com',
+      userRole: 'User',
+    };
+    const response: LoginResponse = {
+      user: dummyUser,
+      token: token,
     };
     return of(response).pipe(delay(2000));
   }

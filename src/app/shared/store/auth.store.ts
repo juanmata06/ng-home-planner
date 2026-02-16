@@ -42,19 +42,28 @@ export const AuthStore = signalStore(
     ) => ({
       destroySubject: () => destroy$,
       validateUserLogged(): void {
-        console.log("Validating user logged");
-        patchState(store, { isAuthLoading: true });
+        console.log('Validating user logged');
         const token = localStorageService.getUserToken();
-        const currentUser = store.user();
-        const isUserLogged = store.isLoggedIn();
-        if (!token || !isUserLogged || !currentUser) {
-          patchState(store, {
-            user: null,
-            token: null,
-            isAuthLoading: false,
-          });
-          localStorageService.deleteUserToken();
+        if (!token) {
+          return;
         }
+        patchState(store, {
+          user: null,
+          token: token,
+          isAuthLoading: true,
+        });
+        authService
+          .loginUserByToken(token)
+          .pipe(takeUntil(destroy$))
+          .subscribe((response: LoginResponse) => {
+            localStorageService.saveUserToken(response.token);
+            patchState(store, {
+              user: response.user,
+              token: response.token,
+              isAuthLoading: false,
+            });
+            router.navigate(['/private-area/dashboard']);
+          });
       },
       loginUser: (credentials: UserLogin): void => {
         patchState(store, { isAuthLoading: true });
