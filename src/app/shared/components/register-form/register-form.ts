@@ -1,19 +1,15 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  inject,
-  OnInit,
   output,
 } from '@angular/core';
 import {
-  FormBuilder,
   FormGroup,
   Validators,
   ReactiveFormsModule,
   FormControl,
 } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-
 import { CustomButton } from '@shared/components/custom-button/custom-button';
 import { CustomCheckbox } from '@shared/components/custom-checkbox/custom-checkbox';
 @Component({
@@ -81,7 +77,7 @@ import { CustomCheckbox } from '@shared/components/custom-checkbox/custom-checkb
     class: 'w-full',
   },
 })
-export class RegisterFormComponent implements OnInit {
+export class RegisterFormComponent {
   /**
    * ------------------------------------------------------------------------------------------------------------------------------
    * General vars
@@ -119,17 +115,12 @@ export class RegisterFormComponent implements OnInit {
    * LYFECYCLE METHODS
    * -----------------------------------------------------------------------------------------------------------------------------
    */
-  ngOnInit(): void {
-    this.createForm();
-  }
 
   /**
    * ------------------------------------------------------------------------------------------------------------------------------
    * PRIVATE METHODS
    * ------------------------------------------------------------------------------------------------------------------------------
    */
-  private createForm(): void {}
-
   public emitFormValue(): void {
     this.formSubmitted.emit(this.form.value);
   }
@@ -146,7 +137,7 @@ export class RegisterFormComponent implements OnInit {
    * ------------------------------------------------------------------------------------------------------------------------------
    */
   submitForm() {
-    //TODO: make her form validations and alert messages
+    //TODO: make here form validations and alert messages
     this.emitFormValue();
   }
 

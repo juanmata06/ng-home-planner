@@ -19,9 +19,9 @@ import {
 
 import { TasksStore } from '@shared/store';
 import { Task, TaskStatus } from '@shared/interfaces';
-import { CardComponent } from '@shared/components/card/card.component';
-import { StatsBanner } from '@shared/components/stats-banner/stats-banner';
 import { DraggableColumn, DraggableItem } from '@shared/components/draggable-table/components';
+import { ModalService } from '@shared/services/modal-service';
+import { TaskDetailsModal } from '../task-details-modal/task-details-modal';
 
 @Component({
   selector: 'app-draggable-table',
@@ -31,37 +31,18 @@ import { DraggableColumn, DraggableItem } from '@shared/components/draggable-tab
     CdkDrag,
     DraggableColumn,
     DraggableItem,
-    StatsBanner,
-    CardComponent,
   ],
   template: `
-    <app-stats-banner>
-      <app-card class="min-w-[340px] max-w-[20%]! block! text-center">
-        <span class="text-size-h4!">
-          TOTAL:
-          <span class="font-bold text-size-h4!">{{ tasksStore.totalTasks() }}</span>
-        </span>
-      </app-card>
-      <!-- TODO: -->
-      <!-- <app-card class="min-w-[340px] max-w-[20%]! block! text-center">
-        <span class="text-size-h4!">
-          IN PROGRESS:
-          <span class="font-bold text-size-h4!">{{ tasksStore.tasksInProgress() }}</span>
-        </span>
-      </app-card> -->
-      <app-card class="min-w-[340px] max-w-[20%]! block! text-center">
-        <span class="text-size-h4!">
-          COMPLETION RATE:
-          <span class="font-bold text-size-h4!">{{ tasksStore.completionRate() }}%</span>
-        </span>
-      </app-card>
-    </app-stats-banner>
-    <div cdkDropListGroup class="py-2 grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div
+      cdkDropListGroup
+      class="py-2 flex flex-col justify-center md:flex-row items-center md:items-start gap-4"
+    >
       <app-draggable-column
         id="todo-column"
         cdkDropList
         [cdkDropListData]="tasksStore.todoTasks()"
         (cdkDropListDropped)="drop($event)"
+        (addItemClicked)="openCreateTaskModal('TODO')"
       >
         <ng-container column-title>
           {{ 'TODO' }}
@@ -74,29 +55,22 @@ import { DraggableColumn, DraggableItem } from '@shared/components/draggable-tab
           }
         </ng-container>
       </app-draggable-column>
-      <!-- TODO: -->
-      <!-- <app-draggable-column
+      <app-draggable-column 
         id="doing-column"
-        cdkDropList
-        [cdkDropListData]="tasksStore.doingTasks()"
-        (cdkDropListDropped)="drop($event)"
+        (addItemClicked)="openCreateTaskModal('DOING')"
       >
         <ng-container column-title>
           {{ 'DOING' }}
         </ng-container>
-        <ng-container column-body>
-          @for (item of tasksStore.doingTasks(); let i = $index; track item) {
-            <app-draggable-item cdkDrag>
-              {{ item.title }}
-            </app-draggable-item>
-          }
-        </ng-container>
-      </app-draggable-column> -->
+        <!-- TODO: -->
+        <ng-container column-body> </ng-container>
+      </app-draggable-column>
       <app-draggable-column
         id="done-column"
         cdkDropList
         [cdkDropListData]="tasksStore.doneTasks()"
         (cdkDropListDropped)="drop($event)"
+        (addItemClicked)="openCreateTaskModal('DONE')"
       >
         <ng-container column-title>
           {{ 'DONE' }}
@@ -114,6 +88,7 @@ import { DraggableColumn, DraggableItem } from '@shared/components/draggable-tab
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DraggableTable {
+  readonly modalService: ModalService = inject(ModalService);
   readonly tasksStore = inject(TasksStore);
 
   readonly statusMap: Record<string, TaskStatus> = {
@@ -131,5 +106,9 @@ export class DraggableTable {
       const targetColumn = this.statusMap[columnId];
       this.tasksStore.updateTask(task.id, targetColumn);
     }
+  }
+
+  openCreateTaskModal(status: TaskStatus) {
+    this.modalService.openModal(TaskDetailsModal, 60)
   }
 }

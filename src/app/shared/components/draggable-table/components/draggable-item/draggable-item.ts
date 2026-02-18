@@ -15,7 +15,7 @@ import { CardComponent } from '@shared/components/card/card.component';
       </div>
       <!-- Item Body -->
       <div id="item-body" class="w-full py-1">
-        <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit lorem ipsum dolor sit amet, consectetur adipiscing elit. </span>
+        <span class="line-clamp-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit lorem ipsum dolor sit amet, consectetur adipiscing elit. </span>
       </div>
       <!-- Item Footer -->
       <div id="item-footer" class="w-full py-1 flex justify-between items-center">
